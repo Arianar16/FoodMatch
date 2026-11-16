@@ -20,6 +20,8 @@ namespace FoodMatch.Api.Data
 
         public DbSet<UserIngredient> UserIngredients { get; set; }
 
+        public DbSet<UserFavorite> UserFavorites { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -50,6 +52,20 @@ namespace FoodMatch.Api.Data
 
             modelBuilder.Entity<UserIngredient>()
                 .HasIndex(ui => new { ui.UserId, ui.IngredientId })
+                .IsUnique();
+
+            modelBuilder.Entity<UserFavorite>()
+                .HasOne(uf => uf.User)
+                .WithMany()
+                .HasForeignKey(uf => uf.UserId);
+
+            modelBuilder.Entity<UserFavorite>()
+                .HasOne(uf => uf.Recipe)
+                .WithMany()
+                .HasForeignKey(uf => uf.RecipeId);
+
+            modelBuilder.Entity<UserFavorite>()
+                .HasIndex(uf => new { uf.UserId, uf.RecipeId })
                 .IsUnique();
         }
     }

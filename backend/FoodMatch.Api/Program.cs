@@ -1,4 +1,3 @@
-
 using FoodMatch.Api.Data;
 using FoodMatch.Api.Repositories;
 using FoodMatch.Api.Services;
@@ -27,6 +26,7 @@ builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
 builder.Services.AddScoped<IRecipeIngredientRepository, RecipeIngredientRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserIngredientRepository, UserIngredientRepository>();
+builder.Services.AddScoped<IUserFavoriteRepository, UserFavoriteRepository>();
 
 // Registrar servicios
 builder.Services.AddScoped<RecipeService>();
@@ -34,6 +34,7 @@ builder.Services.AddScoped<IngredientService>();
 builder.Services.AddScoped<RecipeIngredientService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<UserIngredientService>();
+builder.Services.AddScoped<UserFavoriteService>();
 
 // Obtener configuración JWT
 var jwtSettings = builder.Configuration

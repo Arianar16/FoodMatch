@@ -155,6 +155,30 @@ namespace FoodMatch.Api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("FoodMatch.Api.Models.Entities.UserFavorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipeId");
+
+                    b.HasIndex("UserId", "RecipeId")
+                        .IsUnique();
+
+                    b.ToTable("UserFavorites");
+                });
+
             modelBuilder.Entity("FoodMatch.Api.Models.Entities.UserIngredient", b =>
                 {
                     b.Property<int>("Id")
@@ -196,6 +220,25 @@ namespace FoodMatch.Api.Migrations
                     b.Navigation("Ingredient");
 
                     b.Navigation("Recipe");
+                });
+
+            modelBuilder.Entity("FoodMatch.Api.Models.Entities.UserFavorite", b =>
+                {
+                    b.HasOne("FoodMatch.Api.Models.Entities.Recipe", "Recipe")
+                        .WithMany()
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FoodMatch.Api.Models.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FoodMatch.Api.Models.Entities.UserIngredient", b =>
