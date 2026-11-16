@@ -184,5 +184,59 @@ namespace FoodMatch.Api.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(token)
             };
         }
+
+        // Consultar el perfil del usuario
+        public async Task<UserResponseDTO?> GetProfile(int userId)
+        {
+            var user = await _userRepository.GetById(userId);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new UserResponseDTO
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                IsActive = user.IsActive
+            };
+        }
+
+        // Modificar el perfil del usuario
+        public async Task<UserResponseDTO?> UpdateProfile(
+            int userId,
+            UserUpdateProfileDTO dto)
+        {
+            var user = await _userRepository.GetById(userId);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            var existingUser = await _userRepository.GetByEmail(dto.Email);
+
+            if (existingUser != null && existingUser.Id != userId)
+            {
+                throw new InvalidOperationException(
+                    "Ya existe una cuenta registrada con ese correo electrónico."
+                );
+            }
+
+            user.UserName = dto.UserName;
+            user.Email = dto.Email;
+
+            await _userRepository.Update(user);
+
+            return new UserResponseDTO
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                IsActive = user.IsActive
+            };
+        }
     }
 }
