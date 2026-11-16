@@ -18,6 +18,7 @@ namespace FoodMatch.Api.Data
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<UserIngredient> UserIngredients { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +36,20 @@ namespace FoodMatch.Api.Data
 
             modelBuilder.Entity<RecipeIngredient>()
                 .HasIndex(ri => new { ri.RecipeId, ri.IngredientId })
+                .IsUnique();
+
+            modelBuilder.Entity<UserIngredient>()
+                .HasOne(ui => ui.User)
+                .WithMany()
+                .HasForeignKey(ui => ui.UserId);
+
+            modelBuilder.Entity<UserIngredient>()
+                .HasOne(ui => ui.Ingredient)
+                .WithMany()
+                .HasForeignKey(ui => ui.IngredientId);
+
+            modelBuilder.Entity<UserIngredient>()
+                .HasIndex(ui => new { ui.UserId, ui.IngredientId })
                 .IsUnique();
         }
     }
