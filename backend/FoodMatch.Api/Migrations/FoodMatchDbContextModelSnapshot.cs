@@ -150,6 +150,30 @@ namespace FoodMatch.Api.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("FoodMatch.Api.Models.Entities.UserIngredient", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IngredientId");
+
+                    b.HasIndex("UserId", "IngredientId")
+                        .IsUnique();
+
+                    b.ToTable("UserIngredients");
+                });
+
             modelBuilder.Entity("FoodMatch.Api.Models.Entities.RecipeIngredient", b =>
                 {
                     b.HasOne("FoodMatch.Api.Models.Entities.Ingredient", "Ingredient")
@@ -167,6 +191,25 @@ namespace FoodMatch.Api.Migrations
                     b.Navigation("Ingredient");
 
                     b.Navigation("Recipe");
+                });
+
+            modelBuilder.Entity("FoodMatch.Api.Models.Entities.UserIngredient", b =>
+                {
+                    b.HasOne("FoodMatch.Api.Models.Entities.Ingredient", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FoodMatch.Api.Models.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
