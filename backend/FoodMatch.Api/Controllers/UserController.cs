@@ -29,5 +29,19 @@ namespace FoodMatch.Api.Controllers
 
             return StatusCode(201, user);
         }
+
+        // POST: api/User/login
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(UserLoginDTO dto)
+        {
+            var user = await _userService.Login(dto);
+
+            if (user == null)
+            {
+                return Unauthorized("Correo electrónico o contraseña incorrectos.");
+            }
+
+            return Ok(user);
+        }
     }
 }

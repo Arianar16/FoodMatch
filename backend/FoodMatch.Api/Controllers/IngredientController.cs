@@ -1,6 +1,7 @@
 
 using FoodMatch.Api.DTOs;
 using FoodMatch.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodMatch.Api.Controllers
@@ -40,6 +41,7 @@ namespace FoodMatch.Api.Controllers
         }
 
         // POST: api/Ingredient
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(IngredientCreateDTO dto)
         {
@@ -53,6 +55,7 @@ namespace FoodMatch.Api.Controllers
         }
 
         // PUT: api/Ingredient/5
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, IngredientCreateDTO dto)
         {
@@ -67,6 +70,7 @@ namespace FoodMatch.Api.Controllers
         }
 
         // DELETE: api/Ingredient/5
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

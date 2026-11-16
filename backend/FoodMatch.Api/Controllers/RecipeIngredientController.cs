@@ -1,6 +1,7 @@
 
 using FoodMatch.Api.DTOs;
 using FoodMatch.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodMatch.Api.Controllers
@@ -33,6 +34,7 @@ namespace FoodMatch.Api.Controllers
         }
 
         // POST: api/recipes/1/ingredients
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Add(
             int recipeId,

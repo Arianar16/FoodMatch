@@ -1,11 +1,15 @@
+
 using FoodMatch.Api.Models.Entities;
 using FoodMatch.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FoodMatch.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class UserIngredientController : ControllerBase
     {
         private readonly UserIngredientService _userIngredientService;
@@ -19,6 +23,11 @@ namespace FoodMatch.Api.Controllers
         [HttpGet("{userId}")]
         public async Task<ActionResult<List<UserIngredient>>> GetByUserId(int userId)
         {
+            if (!IsUserAuthorized(userId))
+            {
+                return Forbid();
+            }
+
             var ingredients = await _userIngredientService.GetByUserId(userId);
 
             return Ok(ingredients);
@@ -28,6 +37,11 @@ namespace FoodMatch.Api.Controllers
         [HttpPost("{userId}/{ingredientId}")]
         public async Task<IActionResult> AddIngredient(int userId, int ingredientId)
         {
+            if (!IsUserAuthorized(userId))
+            {
+                return Forbid();
+            }
+
             var result = await _userIngredientService.AddIngredient(userId, ingredientId);
 
             if (!result)
@@ -48,6 +62,11 @@ namespace FoodMatch.Api.Controllers
         [HttpDelete("{userId}/{ingredientId}")]
         public async Task<IActionResult> DeleteIngredient(int userId, int ingredientId)
         {
+            if (!IsUserAuthorized(userId))
+            {
+                return Forbid();
+            }
+
             var result = await _userIngredientService.DeleteIngredient(userId, ingredientId);
 
             if (!result)
@@ -62,6 +81,15 @@ namespace FoodMatch.Api.Controllers
             {
                 message = "Ingrediente eliminado correctamente de la alacena."
             });
+        }
+
+        // Comprobar que el usuario autenticado sea dueño de la alacena
+        private bool IsUserAuthorized(int userId)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            return int.TryParse(userIdClaim, out int authenticatedUserId)
+                   && authenticatedUserId == userId;
         }
     }
 }

@@ -140,6 +140,11 @@ namespace FoodMatch.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasMaxLength(80)

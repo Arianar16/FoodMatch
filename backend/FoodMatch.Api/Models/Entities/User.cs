@@ -21,6 +21,10 @@ namespace FoodMatch.Api.Models.Entities
         [Required]
         public string PasswordHash { get; set; } = string.Empty;
 
+        [Required]
+        [MaxLength(20)]
+        public string Role { get; set; } = "User";
+
         public bool IsActive { get; set; } = true;
     }
 }
