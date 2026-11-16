@@ -1,3 +1,4 @@
+
 using FoodMatch.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +13,11 @@ namespace FoodMatch.Api.Controllers
     {
         private readonly UserFavoriteService _userFavoriteService;
 
-        public UserFavoriteController(
-            UserFavoriteService userFavoriteService)
+        public UserFavoriteController(UserFavoriteService userFavoriteService)
         {
             _userFavoriteService = userFavoriteService;
         }
 
-        // GET: api/UserFavorite
         // Obtener los favoritos del usuario autenticado
         [HttpGet]
         public async Task<IActionResult> GetFavorites()
@@ -35,7 +34,6 @@ namespace FoodMatch.Api.Controllers
             return Ok(favorites);
         }
 
-        // POST: api/UserFavorite/{recipeId}
         // Agregar una receta a favoritos
         [HttpPost("{recipeId}")]
         public async Task<IActionResult> AddFavorite(int recipeId)
@@ -47,20 +45,27 @@ namespace FoodMatch.Api.Controllers
                 return Unauthorized();
             }
 
-            var added = await _userFavoriteService.AddFavorite(
-                userId,
-                recipeId
-            );
-
-            if (!added)
+            if (recipeId <= 0)
             {
-                return Conflict("La receta ya está en favoritos.");
+                return BadRequest("El identificador de la receta no es válido.");
             }
 
-            return Ok("Receta agregada a favoritos correctamente.");
+            try
+            {
+                await _userFavoriteService.AddFavorite(userId, recipeId);
+
+                return Ok("Receta agregada a favoritos correctamente.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(ex.Message);
+            }
         }
 
-        // DELETE: api/UserFavorite/{recipeId}
         // Eliminar una receta de favoritos
         [HttpDelete("{recipeId}")]
         public async Task<IActionResult> DeleteFavorite(int recipeId)
@@ -70,6 +75,11 @@ namespace FoodMatch.Api.Controllers
                 out int userId))
             {
                 return Unauthorized();
+            }
+
+            if (recipeId <= 0)
+            {
+                return BadRequest("El identificador de la receta no es válido.");
             }
 
             var deleted = await _userFavoriteService.DeleteFavorite(

@@ -1,5 +1,5 @@
 
-using FoodMatch.Api.Models.Entities;
+using FoodMatch.Api.DTOs;
 using FoodMatch.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,7 @@ namespace FoodMatch.Api.Controllers
 
         // Obtener los ingredientes de un usuario
         [HttpGet("{userId}")]
-        public async Task<ActionResult<List<UserIngredient>>> GetByUserId(int userId)
+        public async Task<ActionResult<List<UserIngredientResponseDTO>>> GetByUserId(int userId)
         {
             if (!IsUserAuthorized(userId))
             {
@@ -42,20 +42,28 @@ namespace FoodMatch.Api.Controllers
                 return Forbid();
             }
 
-            var result = await _userIngredientService.AddIngredient(userId, ingredientId);
-
-            if (!result)
+            if (ingredientId <= 0)
             {
-                return BadRequest(new
-                {
-                    message = "Este ingrediente ya está en la alacena del usuario."
-                });
+                return BadRequest("El identificador del ingrediente no es válido.");
             }
 
-            return Ok(new
+            try
             {
-                message = "Ingrediente agregado correctamente a la alacena."
-            });
+                await _userIngredientService.AddIngredient(userId, ingredientId);
+
+                return Ok(new
+                {
+                    message = "Ingrediente agregado correctamente a la alacena."
+                });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
         }
 
         // Eliminar un ingrediente de la alacena
@@ -67,7 +75,15 @@ namespace FoodMatch.Api.Controllers
                 return Forbid();
             }
 
-            var result = await _userIngredientService.DeleteIngredient(userId, ingredientId);
+            if (ingredientId <= 0)
+            {
+                return BadRequest("El identificador del ingrediente no es válido.");
+            }
+
+            var result = await _userIngredientService.DeleteIngredient(
+                userId,
+                ingredientId
+            );
 
             if (!result)
             {

@@ -44,8 +44,6 @@ builder.Services.AddScoped<IUserFavoriteRepository, UserFavoriteRepository>();
 // Registrar servicios
 builder.Services.AddScoped<RecipeService>();
 builder.Services.AddScoped<IngredientService>();
-builder.Services.AddScoped<RecipeService>();
-builder.Services.AddScoped<IngredientService>();
 builder.Services.AddScoped<RecipeIngredientService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<UserIngredientService>();

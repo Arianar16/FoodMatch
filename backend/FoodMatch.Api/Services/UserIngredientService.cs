@@ -1,3 +1,5 @@
+
+using FoodMatch.Api.DTOs;
 using FoodMatch.Api.Models.Entities;
 using FoodMatch.Api.Repositories;
 
@@ -6,19 +8,48 @@ namespace FoodMatch.Api.Services
     public class UserIngredientService
     {
         private readonly IUserIngredientRepository _userIngredientRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IIngredientRepository _ingredientRepository;
 
-        public UserIngredientService(IUserIngredientRepository userIngredientRepository)
+        public UserIngredientService(
+            IUserIngredientRepository userIngredientRepository,
+            IUserRepository userRepository,
+            IIngredientRepository ingredientRepository)
         {
             _userIngredientRepository = userIngredientRepository;
+            _userRepository = userRepository;
+            _ingredientRepository = ingredientRepository;
         }
 
-        public async Task<List<UserIngredient>> GetByUserId(int userId)
+        // Obtener los ingredientes de la alacena de un usuario
+        public async Task<List<UserIngredientResponseDTO>> GetByUserId(int userId)
         {
-            return await _userIngredientRepository.GetByUserId(userId);
+            var ingredients = await _userIngredientRepository.GetByUserId(userId);
+
+            return ingredients.Select(item => new UserIngredientResponseDTO
+            {
+                IngredientId = item.IngredientId,
+                IngredientName = item.Ingredient.Name,
+                Category = item.Ingredient.Category
+            }).ToList();
         }
 
-        public async Task<bool> AddIngredient(int userId, int ingredientId)
+        // Agregar un ingrediente a la alacena
+        public async Task AddIngredient(int userId, int ingredientId)
         {
+            var user = await _userRepository.GetById(userId);
+            var ingredient = await _ingredientRepository.GetById(ingredientId);
+
+            if (user == null)
+            {
+                throw new KeyNotFoundException("El usuario no existe.");
+            }
+
+            if (ingredient == null)
+            {
+                throw new KeyNotFoundException("El ingrediente no existe.");
+            }
+
             var existing = await _userIngredientRepository.GetByUserAndIngredient(
                 userId,
                 ingredientId
@@ -26,7 +57,7 @@ namespace FoodMatch.Api.Services
 
             if (existing != null)
             {
-                return false;
+                throw new InvalidOperationException("El ingrediente ya está en la alacena.");
             }
 
             var userIngredient = new UserIngredient
@@ -36,10 +67,9 @@ namespace FoodMatch.Api.Services
             };
 
             await _userIngredientRepository.Add(userIngredient);
-
-            return true;
         }
 
+        // Eliminar un ingrediente de la alacena
         public async Task<bool> DeleteIngredient(int userId, int ingredientId)
         {
             var existing = await _userIngredientRepository.GetByUserAndIngredient(
