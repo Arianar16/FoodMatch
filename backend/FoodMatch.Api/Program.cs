@@ -1,4 +1,6 @@
+
 using FoodMatch.Api.Data;
+using FoodMatch.Api.Middleware;
 using FoodMatch.Api.Repositories;
 using FoodMatch.Api.Services;
 using FoodMatch.Api.Settings;
@@ -12,6 +14,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Registrar controladores
 builder.Services.AddControllers();
+
+// Configurar CORS para permitir la comunicación con React
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 // Configurar conexión con SQL Server
 builder.Services.AddDbContext<FoodMatchDbContext>(options =>
@@ -29,6 +42,8 @@ builder.Services.AddScoped<IUserIngredientRepository, UserIngredientRepository>(
 builder.Services.AddScoped<IUserFavoriteRepository, UserFavoriteRepository>();
 
 // Registrar servicios
+builder.Services.AddScoped<RecipeService>();
+builder.Services.AddScoped<IngredientService>();
 builder.Services.AddScoped<RecipeService>();
 builder.Services.AddScoped<IngredientService>();
 builder.Services.AddScoped<RecipeIngredientService>();
@@ -87,6 +102,10 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+// Manejo global de errores
+app.UseMiddleware<GlobalExceptionMiddleware>();
+
+// Crear administrador inicial en desarrollo
 if (app.Environment.IsDevelopment())
 {
     using (var scope = app.Services.CreateScope())
@@ -105,9 +124,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Configurar CORS
+app.UseCors("ReactPolicy");
+
+// Configurar autenticación y autorización
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Habilitar controladores
 app.MapControllers();
 
 app.Run();
