@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
 import {
@@ -7,16 +6,34 @@ import {
 } from '../services/authService'
 import api from '../services/api'
 
+const DEMO_MODE = import.meta.env.VITE_DEMO_MODE === 'true'
+
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem('token'))
+  const [token, setToken] = useState(() => {
+    const savedToken = localStorage.getItem('token')
+
+    if (DEMO_MODE) {
+      return savedToken?.startsWith('demo-token') ? savedToken : null
+    }
+
+    return savedToken
+  })
 
   const [user, setUser] = useState(() => {
+    const savedToken = localStorage.getItem('token')
     const savedUser = localStorage.getItem('user')
+
+    if (DEMO_MODE && !savedToken?.startsWith('demo-token')) {
+      return null
+    }
+
     return savedUser ? JSON.parse(savedUser) : null
   })
 
   useEffect(() => {
-    if (token) {
+    if (DEMO_MODE) {
+      delete api.defaults.headers.common.Authorization
+    } else if (token) {
       api.defaults.headers.common.Authorization = `Bearer ${token}`
     } else {
       delete api.defaults.headers.common.Authorization
@@ -24,13 +41,27 @@ export function AuthProvider({ children }) {
   }, [token])
 
   const login = async (email, password) => {
-    const data = await loginService(email, password)
+    let receivedToken
+    let userData
 
-    const receivedToken = data.token
-    const userData = {
-      id: data.id,
-      userName: data.userName,
-      email: data.email,
+    if (DEMO_MODE) {
+      receivedToken = 'demo-token'
+
+      userData = {
+        id: 1,
+        userName: email.split('@')[0],
+        email: email,
+      }
+    } else {
+      const data = await loginService(email, password)
+
+      receivedToken = data.token
+
+      userData = {
+        id: data.id,
+        userName: data.userName,
+        email: data.email,
+      }
     }
 
     localStorage.setItem('token', receivedToken)
@@ -43,6 +74,12 @@ export function AuthProvider({ children }) {
   }
 
   const register = async (userName, email, password) => {
+    if (DEMO_MODE) {
+      return {
+        message: 'Registro de demostración completado',
+      }
+    }
+
     return await registerService(userName, email, password)
   }
 
@@ -54,6 +91,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
+
     setToken(null)
     setUser(null)
   }
