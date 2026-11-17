@@ -96,19 +96,19 @@ function CreateRecipe() {
   }
 
   const inputStyle =
-    "w-full rounded-xl border border-[#E5E7D9] bg-[#FFFDF8] px-4 py-3 text-[#173B32] outline-none transition placeholder:text-[#A49B8E] focus:border-[#00A878] focus:ring-2 focus:ring-[#00A878]/15"
+    'w-full min-w-0 rounded-xl border border-[#E5E7D9] bg-[#FFFDF8] px-4 py-3 text-[#173B32] outline-none transition placeholder:text-[#A49B8E] focus:border-[#00A878] focus:ring-2 focus:ring-[#00A878]/15'
 
   const labelStyle =
-    "mb-2 block text-sm font-bold text-[#31594C]"
+    'mb-2 block text-sm font-bold text-[#31594C]'
 
   return (
     <div className="min-h-screen bg-[#FFF9EF]">
       <Navbar />
 
-      <main className="min-h-screen px-4 py-10 sm:px-6 lg:ml-64 lg:px-10">
+      <main className="ml-0 min-h-screen px-4 py-6 sm:px-6 sm:py-10 md:ml-64 md:px-8 lg:px-10">
         <div className="mx-auto w-full max-w-4xl">
 
-          <div className="mb-8 text-center">
+          <div className="mb-8 text-center sm:mb-10">
             <Link
               to="/recetas"
               className="mb-7 inline-flex items-center gap-2 rounded-xl text-sm font-bold text-[#00A878] transition hover:text-[#008F67] hover:underline"
@@ -116,7 +116,7 @@ function CreateRecipe() {
               ← Volver a recetas
             </Link>
 
-            <p className="mb-2 text-sm font-bold uppercase tracking-widest text-[#00A878]">
+            <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#00A878] sm:text-sm">
               Compartí tus ideas
             </p>
 
@@ -124,7 +124,7 @@ function CreateRecipe() {
               Agregar receta
             </h1>
 
-            <p className="mx-auto mt-3 max-w-xl leading-relaxed text-[#82796D]">
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-[#82796D] sm:text-base">
               Compartí tus preparaciones favoritas con la comunidad de FoodMatch.
               Completá los datos y agregá los ingredientes necesarios.
             </p>
@@ -134,7 +134,7 @@ function CreateRecipe() {
 
           <form
             onSubmit={handleSubmit}
-            className="space-y-8 rounded-3xl border border-[#EEE5D7] bg-white p-5 shadow-lg shadow-[#173B32]/5 sm:p-8 lg:p-10"
+            className="space-y-8 rounded-2xl border border-[#EEE5D7] bg-white p-4 shadow-lg shadow-[#173B32]/5 sm:rounded-3xl sm:p-8 lg:p-10"
           >
 
             <section>
@@ -214,7 +214,7 @@ function CreateRecipe() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                  <div>
+                  <div className="min-w-0">
                     <label className={labelStyle}>
                       Tiempo de preparación (minutos)
                     </label>
@@ -230,7 +230,7 @@ function CreateRecipe() {
                     />
                   </div>
 
-                  <div>
+                  <div className="min-w-0">
                     <label className={labelStyle}>
                       Cantidad de porciones
                     </label>
@@ -286,9 +286,9 @@ function CreateRecipe() {
                 {selectedIngredients.map((ingredient, index) => (
                   <div
                     key={index}
-                    className="rounded-2xl border border-[#EEE5D7] bg-[#FFFDF8] p-4 sm:p-5"
+                    className="min-w-0 rounded-2xl border border-[#EEE5D7] bg-[#FFFDF8] p-3 sm:p-5"
                   >
-                    <div className="mb-4 flex items-center justify-between">
+                    <div className="mb-4 flex items-center justify-between gap-2">
                       <span className="text-sm font-extrabold text-[#173B32]">
                         Ingrediente {index + 1}
                       </span>
@@ -297,14 +297,14 @@ function CreateRecipe() {
                         <button
                           type="button"
                           onClick={() => removeIngredient(index)}
-                          className="rounded-lg px-3 py-2 text-xs font-bold text-[#C65B46] transition hover:bg-[#FFF0EB]"
+                          className="shrink-0 rounded-lg px-3 py-2 text-xs font-bold text-[#C65B46] transition hover:bg-[#FFF0EB]"
                         >
                           Eliminar
                         </button>
                       )}
                     </div>
 
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    <div className="grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-3">
                       <select
                         value={ingredient.ingredientId}
                         onChange={(e) =>
@@ -351,7 +351,7 @@ function CreateRecipe() {
                 <button
                   type="button"
                   onClick={addIngredient}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#00A878] bg-[#E7F3E5] px-5 py-3 text-sm font-bold text-[#008F67] transition hover:bg-[#D8EDDA]"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#00A878] bg-[#E7F3E5] px-5 py-3 text-sm font-bold text-[#008F67] transition hover:bg-[#D8EDDA] sm:w-auto"
                 >
                   + Agregar otro ingrediente
                 </button>
@@ -401,7 +401,7 @@ function CreateRecipe() {
             </section>
 
             {error && (
-              <p className="rounded-xl border border-[#F2C9BA] bg-[#FFF0EB] p-4 text-sm font-semibold text-[#A64B38]">
+              <p className="wrap-break-word rounded-xl border border-[#F2C9BA] bg-[#FFF0EB] p-4 text-sm font-semibold text-[#A64B38]">
                 {error}
               </p>
             )}
@@ -420,7 +420,6 @@ function CreateRecipe() {
               </p>
             </div>
           </form>
-
         </div>
       </main>
     </div>

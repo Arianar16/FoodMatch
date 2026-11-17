@@ -46,16 +46,15 @@ function Recipes() {
     <div className="min-h-screen bg-[#FFF9EF]">
       <Navbar />
 
-      <main className="ml-64 min-h-screen px-8 py-10 lg:px-12">
+      <main className="ml-0 min-h-screen px-4 py-7 sm:px-6 sm:py-8 md:ml-64 lg:px-12 lg:py-10">
         <div className="mx-auto max-w-7xl">
-
-          <div className="mb-10 flex flex-wrap items-center justify-between gap-5">
+          <div className="mb-8 flex flex-col items-start justify-between gap-5 sm:mb-10 sm:flex-row sm:items-center">
             <div>
               <p className="mb-2 text-sm font-bold uppercase tracking-widest text-[#008F67]">
                 Descubrí nuevas ideas
               </p>
 
-              <h1 className="text-4xl font-extrabold tracking-tight text-[#173B32]">
+              <h1 className="text-3xl font-extrabold tracking-tight text-[#173B32] sm:text-4xl">
                 Nuestras recetas
               </h1>
 
@@ -67,7 +66,7 @@ function Recipes() {
 
             <Link
               to="/recetas/nueva"
-              className="inline-flex items-center gap-2 rounded-xl bg-[#00A878] px-6 py-3 font-bold text-white shadow-md shadow-[#173B32]/10 transition hover:-translate-y-0.5 hover:bg-[#008F67]"
+              className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-[#00A878] px-6 py-3 font-bold text-white shadow-md shadow-[#173B32]/10 transition hover:-translate-y-0.5 hover:bg-[#008F67] sm:w-auto"
             >
               <span className="text-xl">+</span>
               Crear receta
@@ -76,7 +75,7 @@ function Recipes() {
 
           {!loading && !error && recipes.length > 0 && (
             <div className="mb-8">
-              <div className="relative max-w-xl">
+              <div className="relative w-full max-w-xl">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -128,7 +127,6 @@ function Recipes() {
           {loading && (
             <div className="rounded-3xl border border-[#31594C]/10 bg-[#FFF3D6] px-6 py-16 text-center shadow-sm">
               <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-4 border-[#B9D8C5] border-t-[#00A878]" />
-
               <p className="font-semibold text-[#173B32]">
                 Cargando recetas...
               </p>
@@ -167,7 +165,7 @@ function Recipes() {
 
           {!loading && !error && recipes.length > 0 && (
             <>
-              <div className="mb-6 flex items-center justify-between">
+              <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-xl font-bold text-[#173B32]">
                   Explorá el catálogo
                 </h2>
@@ -198,13 +196,13 @@ function Recipes() {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 xl:grid-cols-3">
                   {filteredRecipes.map((recipe) => (
                     <article
                       key={recipe.id}
-                      className="group overflow-hidden rounded-3xl border border-[#E9E0D1] bg-[#FFF3D6] shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
+                      className="group min-w-0 overflow-hidden rounded-3xl border border-[#E9E0D1] bg-[#FFF3D6] shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
                     >
-                      <div className="relative h-52 overflow-hidden bg-[#DCEFE0]">
+                      <div className="relative h-48 overflow-hidden bg-[#DCEFE0] sm:h-52">
                         {recipe.imageUrl ? (
                           <img
                             src={recipe.imageUrl}
@@ -214,7 +212,6 @@ function Recipes() {
                         ) : (
                           <div className="flex h-full flex-col items-center justify-center text-[#31594C]">
                             <span className="text-5xl">🥗</span>
-
                             <span className="mt-2 text-sm font-semibold">
                               Sin imagen disponible
                             </span>
@@ -226,7 +223,7 @@ function Recipes() {
                         </div>
                       </div>
 
-                      <div className="p-6">
+                      <div className="p-5 sm:p-6">
                         <h3 className="mb-2 text-xl font-extrabold text-[#173B32]">
                           {recipe.name}
                         </h3>
@@ -265,7 +262,6 @@ function Recipes() {
               )}
             </>
           )}
-
         </div>
       </main>
     </div>

@@ -190,20 +190,23 @@ function RecipeDetail() {
     <div className="min-h-screen bg-[#96E6B3]">
       <Navbar />
 
-      <main className="ml-64 min-h-screen px-8 py-10 lg:px-12">
+      <main className="ml-0 min-h-screen px-4 py-6 sm:px-6 md:ml-64 md:px-8 md:py-10 lg:px-12">
         <div className="mx-auto max-w-5xl">
           <Link
             to="/recetas"
             className="group inline-flex items-center gap-2.5 text-sm font-medium text-[#31594C] transition-colors hover:text-[#00A878]"
           >
             <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#31594C]/25 transition-all group-hover:border-[#00A878] group-hover:bg-[#00A878]/10">
-              <SectionIcon name="arrow" className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+              <SectionIcon
+                name="arrow"
+                className="h-4 w-4 transition-transform group-hover:-translate-x-0.5"
+              />
             </span>
             Volver a recetas
           </Link>
 
           {loading && (
-            <div className="mt-8 rounded-3xl bg-[#FFF3D6] px-6 py-16 text-center shadow-sm">
+            <div className="mt-6 rounded-3xl bg-[#FFF3D6] px-4 py-12 text-center shadow-sm sm:mt-8 sm:px-6 sm:py-16">
               <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-4 border-[#B9D8C5] border-t-[#00A878]" />
               <p className="font-semibold text-[#173B32]">
                 Cargando receta...
@@ -212,7 +215,7 @@ function RecipeDetail() {
           )}
 
           {!loading && error && (
-            <div className="mt-8 rounded-2xl border border-[#FF7557]/30 bg-[#FFF3D6] p-6 text-center">
+            <div className="mt-6 rounded-2xl border border-[#FF7557]/30 bg-[#FFF3D6] p-5 text-center sm:mt-8 sm:p-6">
               <p className="font-semibold text-[#A63D2B]">{error}</p>
 
               <Link
@@ -225,9 +228,9 @@ function RecipeDetail() {
           )}
 
           {!loading && !error && recipe && (
-            <article className="mt-8 overflow-hidden rounded-3xl border border-[#E9E0D1] bg-[#FFF3D6] shadow-lg">
+            <article className="mt-6 overflow-hidden rounded-2xl border border-[#E9E0D1] bg-[#FFF3D6] shadow-lg sm:mt-8 sm:rounded-3xl">
               {recipe.imageUrl && (
-                <div className="h-64 overflow-hidden sm:h-80 lg:h-96">
+                <div className="h-52 overflow-hidden sm:h-80 lg:h-96">
                   <img
                     src={recipe.imageUrl}
                     alt={recipe.name}
@@ -236,14 +239,14 @@ function RecipeDetail() {
                 </div>
               )}
 
-              <div className="p-6 sm:p-8 lg:p-10">
-                <div className="flex flex-wrap items-center justify-between gap-5">
-                  <div>
-                    <p className="mb-2 text-sm font-bold uppercase tracking-widest text-[#008F67]">
+              <div className="p-4 sm:p-6 md:p-8 lg:p-10">
+                <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center sm:gap-5">
+                  <div className="min-w-0">
+                    <p className="mb-2 text-xs font-bold uppercase tracking-widest text-[#008F67] sm:text-sm">
                       FoodMatch · Recetas
                     </p>
 
-                    <h1 className="text-3xl font-extrabold tracking-tight text-[#173B32] sm:text-4xl">
+                    <h1 className="wrap-break-word text-2xl font-extrabold tracking-tight text-[#173B32] sm:text-3xl lg:text-4xl">
                       {recipe.name}
                     </h1>
                   </div>
@@ -252,7 +255,7 @@ function RecipeDetail() {
                     type="button"
                     onClick={handleFavorite}
                     disabled={favoriteLoading || !favoriteStatusReady}
-                    className={`inline-flex items-center gap-2 rounded-xl border px-5 py-3 font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${
+                    className={`inline-flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:shrink-0 sm:px-5 sm:text-base ${
                       isFavorite
                         ? 'border-[#FF7557]/40 bg-[#FF7557]/10 text-[#A63D2B] hover:bg-[#FF7557]/20'
                         : 'border-[#00A878]/30 bg-[#00A878]/10 text-[#176044] hover:bg-[#00A878]/20'
@@ -274,24 +277,24 @@ function RecipeDetail() {
                 </div>
 
                 {favoriteMessage && (
-                  <p className="mt-4 rounded-xl bg-[#00A878]/10 px-4 py-3 text-sm font-medium text-[#176044]">
+                  <p className="mt-4 wrap-break-word rounded-xl bg-[#00A878]/10 px-4 py-3 text-sm font-medium text-[#176044]">
                     {favoriteMessage}
                   </p>
                 )}
 
                 {recipe.description && (
-                  <p className="mt-6 leading-7 text-[#64756D]">
+                  <p className="mt-5 leading-7 text-[#64756D] sm:mt-6">
                     {recipe.description}
                   </p>
                 )}
 
-                <div className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div className="flex items-center gap-3 rounded-2xl bg-[#E8F3E5] p-4">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#00A878]/15 text-[#176044]">
+                <div className="mt-6 grid grid-cols-1 gap-3 sm:mt-7 sm:grid-cols-2 sm:gap-4">
+                  <div className="flex items-center gap-3 rounded-2xl bg-[#E8F3E5] p-3 sm:p-4">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#00A878]/15 text-[#176044] sm:h-11 sm:w-11">
                       <SectionIcon name="clock" className="h-6 w-6" />
                     </span>
 
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-xs font-medium text-[#64756D]">
                         Tiempo de preparación
                       </p>
@@ -304,12 +307,12 @@ function RecipeDetail() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 rounded-2xl bg-[#E8F3E5] p-4">
-                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#00A878]/15 text-[#176044]">
+                  <div className="flex items-center gap-3 rounded-2xl bg-[#E8F3E5] p-3 sm:p-4">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#00A878]/15 text-[#176044] sm:h-11 sm:w-11">
                       <SectionIcon name="servings" className="h-6 w-6" />
                     </span>
 
-                    <div>
+                    <div className="min-w-0">
                       <p className="text-xs font-medium text-[#64756D]">
                         Porciones
                       </p>
@@ -323,13 +326,13 @@ function RecipeDetail() {
                   </div>
                 </div>
 
-                <section className="mt-10">
-                  <div className="mb-5 flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#00A878]/15 text-[#176044]">
+                <section className="mt-8 sm:mt-10">
+                  <div className="mb-4 flex items-center gap-3 sm:mb-5">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#00A878]/15 text-[#176044]">
                       <SectionIcon name="ingredients" className="h-6 w-6" />
                     </span>
 
-                    <h2 className="text-2xl font-bold text-[#173B32]">
+                    <h2 className="text-xl font-bold text-[#173B32] sm:text-2xl">
                       Ingredientes
                     </h2>
                   </div>
@@ -347,14 +350,14 @@ function RecipeDetail() {
                       {ingredients.map((ingredient) => (
                         <li
                           key={ingredient.ingredientId}
-                          className="flex items-center gap-3 rounded-xl border border-[#E9E0D1] bg-white/50 p-4"
+                          className="flex items-center gap-3 rounded-xl border border-[#E9E0D1] bg-white/50 p-3 sm:p-4"
                         >
                           <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#00A878]/15 text-[#176044]">
                             <SectionIcon name="check" className="h-4 w-4" />
                           </span>
 
-                          <div>
-                            <p className="font-semibold text-[#173B32]">
+                          <div className="min-w-0">
+                            <p className="wrap-break-word font-semibold text-[#173B32]">
                               {ingredient.ingredientName}
                             </p>
 
@@ -368,18 +371,18 @@ function RecipeDetail() {
                   )}
                 </section>
 
-                <section className="mt-10 border-t border-[#E9E0D1] pt-8">
-                  <div className="mb-5 flex items-center gap-3">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#FF7557]/15 text-[#A63D2B]">
+                <section className="mt-8 border-t border-[#E9E0D1] pt-6 sm:mt-10 sm:pt-8">
+                  <div className="mb-4 flex items-center gap-3 sm:mb-5">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#FF7557]/15 text-[#A63D2B]">
                       <SectionIcon name="preparation" className="h-6 w-6" />
                     </span>
 
-                    <h2 className="text-2xl font-bold text-[#173B32]">
+                    <h2 className="text-xl font-bold text-[#173B32] sm:text-2xl">
                       Preparación
                     </h2>
                   </div>
 
-                  <p className="whitespace-pre-line leading-8 text-[#64756D]">
+                  <p className="whitespace-pre-line wrap-break-word leading-7 text-[#64756D] sm:leading-8">
                     {recipe.instructions || 'No hay instrucciones registradas.'}
                   </p>
                 </section>

@@ -105,8 +105,8 @@ function Home() {
     <div className="min-h-screen bg-[#96E6B3]">
       <Navbar />
 
-      <div className="ml-64 min-h-screen">
-        <header className="flex items-center justify-between border-b border-[#31594C]/15 bg-[#FFF3D6] px-10 py-5">
+      <div className="min-h-screen ml-0 md:ml-64">
+        <header className="flex flex-col gap-4 border-b border-[#31594C]/15 bg-[#FFF3D6] px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-10 lg:py-5">
           <div>
             <p className="text-sm text-[#64756D]">
               Tu espacio de alimentación
@@ -118,25 +118,25 @@ function Home() {
 
           <Link
             to="/perfil"
-            className="flex items-center gap-3 rounded-full border border-[#31594C]/20 bg-white/60 py-2 pl-2 pr-4 transition hover:border-[#00A878]"
+            className="flex w-fit max-w-full items-center gap-3 rounded-full border border-[#31594C]/20 bg-white/60 py-2 pl-2 pr-4 transition hover:border-[#00A878]"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#00A878] font-bold text-white">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#00A878] font-bold text-white">
               {user?.userName?.charAt(0)?.toUpperCase() || 'U'}
             </span>
 
-            <span className="text-sm font-semibold text-[#173B32]">
+            <span className="truncate text-sm font-semibold text-[#173B32]">
               {user?.userName || 'Mi perfil'}
             </span>
           </Link>
         </header>
 
-        <main className="mx-auto max-w-7xl px-10 py-10">
+        <main className="mx-auto max-w-7xl px-4 py-7 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
           <section>
             <p className="text-sm font-semibold tracking-widest text-[#176044]">
               TU DÍA, TU ELECCIÓN
             </p>
 
-            <h1 className="mt-3 text-4xl font-bold tracking-tight text-[#173B32]">
+            <h1 className="mt-3 text-3xl font-bold tracking-tight text-[#173B32] sm:text-4xl">
               ¡Hola, {user?.userName || 'bienvenido'}!
               <span className="text-[#FF7557]">.</span>
             </h1>
@@ -147,13 +147,13 @@ function Home() {
             </p>
           </section>
 
-          <section className="mt-10">
+          <section className="mt-8 sm:mt-10">
             <div className="mb-5">
               <p className="text-xs font-bold tracking-[0.18em] text-[#A63D2B]">
                 EMPEZÁ POR ACÁ
               </p>
 
-              <h2 className="mt-2 text-2xl font-bold text-[#173B32]">
+              <h2 className="mt-2 text-xl font-bold text-[#173B32] sm:text-2xl">
                 ¿Qué te gustaría cocinar hoy?
               </h2>
             </div>
@@ -162,12 +162,12 @@ function Home() {
               to="/recetas"
               className="group relative flex min-h-67.5 overflow-hidden rounded-3xl border border-[#31594C]/20 bg-[#173B32] shadow-lg shadow-[#173B32]/10 transition duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
-              <div className="relative z-10 flex max-w-xl flex-col justify-center p-8 sm:p-10">
+              <div className="relative z-10 flex max-w-xl flex-col justify-center p-6 sm:p-10">
                 <span className="w-fit rounded-full bg-[#96E6B3]/15 px-4 py-2 text-xs font-bold tracking-widest text-[#96E6B3]">
                   COCINAR
                 </span>
 
-                <h3 className="mt-5 text-3xl font-bold leading-tight text-white sm:text-4xl">
+                <h3 className="mt-5 text-2xl font-bold leading-tight text-white sm:text-4xl">
                   Convertí tus ingredientes en algo delicioso.
                 </h3>
 
@@ -205,13 +205,13 @@ function Home() {
             </Link>
           </section>
 
-          <section className="mt-12 pb-10">
+          <section className="mt-10 pb-10 sm:mt-12">
             <div className="mb-5">
               <p className="text-xs font-bold tracking-[0.18em] text-[#176044]">
                 TUS HERRAMIENTAS
               </p>
 
-              <h2 className="mt-2 text-2xl font-bold text-[#173B32]">
+              <h2 className="mt-2 text-xl font-bold text-[#173B32] sm:text-2xl">
                 Explorá FoodMatch
               </h2>
             </div>
