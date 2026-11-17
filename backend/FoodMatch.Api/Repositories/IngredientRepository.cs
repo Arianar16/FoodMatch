@@ -24,6 +24,15 @@ namespace FoodMatch.Api.Repositories
             return await _context.Ingredients.FindAsync(id);
         }
 
+        public async Task<Ingredient?> GetByName(string name)
+        {
+            string normalizedName = name.Trim().ToLower();
+
+            return await _context.Ingredients
+                .FirstOrDefaultAsync(ingredient =>
+                    ingredient.Name.ToLower() == normalizedName);
+        }
+
         public async Task Add(Ingredient ingredient)
         {
             await _context.Ingredients.AddAsync(ingredient);

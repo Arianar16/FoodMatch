@@ -9,6 +9,8 @@ namespace FoodMatch.Api.Repositories
 
         Task<Ingredient?> GetById(int id);
 
+        Task<Ingredient?> GetByName(string name);
+
         Task Add(Ingredient ingredient);
 
         Task Update(Ingredient ingredient);

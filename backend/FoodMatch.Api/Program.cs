@@ -49,6 +49,9 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<UserIngredientService>();
 builder.Services.AddScoped<UserFavoriteService>();
 
+// Registrar servicio de importación de TheMealDB
+builder.Services.AddHttpClient<MealDbImportService>();
+
 // Obtener configuración JWT
 var jwtSettings = builder.Configuration
     .GetSection("JwtSettings")
