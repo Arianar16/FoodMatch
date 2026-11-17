@@ -1,7 +1,10 @@
 
 import { useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
-import { login as loginService, register as registerService } from '../services/authService'
+import {
+  login as loginService,
+  register as registerService,
+} from '../services/authService'
 import api from '../services/api'
 
 export function AuthProvider({ children }) {
@@ -43,6 +46,11 @@ export function AuthProvider({ children }) {
     return await registerService(userName, email, password)
   }
 
+  const updateUser = (userData) => {
+    localStorage.setItem('user', JSON.stringify(userData))
+    setUser(userData)
+  }
+
   const logout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
@@ -52,7 +60,15 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, token, isAuthenticated: !!token, login, register, logout }}
+      value={{
+        user,
+        token,
+        isAuthenticated: !!token,
+        login,
+        register,
+        updateUser,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

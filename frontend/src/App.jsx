@@ -8,6 +8,8 @@ import RecipeDetail from './pages/RecipeDetail'
 import CreateRecipe from './pages/CreateRecipe'
 import Ingredients from './pages/Ingredients'
 import Pantry from './pages/Pantry'
+import Favorites from './pages/Favorites'
+import Profile from './pages/Profile'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
           <Route path="/recetas/:id" element={<RecipeDetail />} />
           <Route path="/ingredientes" element={<Ingredients />} />
           <Route path="/alacena" element={<Pantry />} />
+          <Route path="/favoritos" element={<Favorites />} />
+          <Route path="/perfil" element={<Profile />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />
